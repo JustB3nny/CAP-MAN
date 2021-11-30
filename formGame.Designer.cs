@@ -1,7 +1,7 @@
 ﻿
 namespace CAP_MAN
 {
-    partial class formStartGame
+    partial class formGame
     {
         /// <summary>
         /// Required designer variable.

@@ -61,13 +61,13 @@ namespace CAP_MAN
             switch (btnName)
             {
                 case "btnSingleplayer":
-                    formStartGame formSingleplayer = new formStartGame() { TopLevel = false, AutoScroll = true, TopMost = true, FormBorderStyle = FormBorderStyle.None, Dock = DockStyle.Fill }; //Declares new form.
+                    formGame formSingleplayer = new formGame() { TopLevel = false, AutoScroll = true, TopMost = true, FormBorderStyle = FormBorderStyle.None, Dock = DockStyle.Fill }; //Declares new form.
                     pDesktop.Controls.Add(formSingleplayer); //Adds it to pDesktop.Controls so that it can be displayed inside the panel.
                     activeForm = formSingleplayer; //Sets the active form to the newly created form.
                     formSingleplayer.multiplayer = false; //Passes the value of false to the form so that only one textbox is displayed.
                     break;
                 case "btnLocalMultiplayer":
-                    formStartGame formMultiplayer = new formStartGame() { TopLevel = false, AutoScroll = true, TopMost = true, FormBorderStyle = FormBorderStyle.None, Dock = DockStyle.Fill }; //Declares new form.
+                    formGame formMultiplayer = new formGame() { TopLevel = false, AutoScroll = true, TopMost = true, FormBorderStyle = FormBorderStyle.None, Dock = DockStyle.Fill }; //Declares new form.
                     pDesktop.Controls.Add(formMultiplayer); //Adds it to pDesktop.Controls so that it can be displayed inside the panel.
                     activeForm = formMultiplayer; //Sets the active form to the newly created form.
                     formMultiplayer.multiplayer = true; //Passes the value of true to the form so that both textboxes are displayed.
