@@ -251,11 +251,11 @@ namespace CAP_MAN
                 g.FillRectangle(Brushes.Blue, walls[i].X * cellSize.Width, walls[i].Y * cellSize.Height, cellSize.Width, cellSize.Height);
             }
             //Draws the maze coins by looping through every index.
-            /*for (int i = 0; i < points.Count; i++)
+            for (int i = 0; i < points.Count; i++)
             {
                 //Draws a coin at specific x & y values obtained by the index of the wall and cell size.
                 g.FillEllipse(Brushes.Orange, points[i].X * cellSize.Width + cellSize.Width / 2, points[i].Y * cellSize.Height + cellSize.Height / 2, 5, 5);
-            }*/
+            }
 
             //g.DrawImage(Image, p1.X * cellSize.Width + cellSize.Width / 4, p1.Y * cellSize.Height, 20, 20);
 
