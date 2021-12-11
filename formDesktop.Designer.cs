@@ -63,7 +63,7 @@ namespace CAP_MAN
             this.btnClose.Location = new System.Drawing.Point(1248, 0);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(32, 32);
-            this.btnClose.TabIndex = 2;
+            this.btnClose.TabIndex = 1;
             this.btnClose.Text = "X";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -77,7 +77,7 @@ namespace CAP_MAN
             this.lbFormName.Margin = new System.Windows.Forms.Padding(0);
             this.lbFormName.Name = "lbFormName";
             this.lbFormName.Size = new System.Drawing.Size(64, 32);
-            this.lbFormName.TabIndex = 1;
+            this.lbFormName.TabIndex = 0;
             this.lbFormName.Text = "CAP-MAN";
             this.lbFormName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 

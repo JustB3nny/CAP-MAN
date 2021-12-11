@@ -39,12 +39,12 @@ namespace CAP_MAN
             this.btnLocalMultiplayer = new System.Windows.Forms.Button();
             this.btnSingleplayer = new System.Windows.Forms.Button();
             this.pDesktop = new System.Windows.Forms.Panel();
-            this.pbLogo = new System.Windows.Forms.PictureBox();
             this.pbBanner = new System.Windows.Forms.PictureBox();
+            this.pbLogo = new System.Windows.Forms.PictureBox();
             this.pMenu.SuspendLayout();
             this.pDesktop.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // lbGameTitle
@@ -100,7 +100,7 @@ namespace CAP_MAN
             this.btnControls.Location = new System.Drawing.Point(0, 386);
             this.btnControls.Name = "btnControls";
             this.btnControls.Size = new System.Drawing.Size(256, 64);
-            this.btnControls.TabIndex = 5;
+            this.btnControls.TabIndex = 4;
             this.btnControls.Text = "Controls";
             this.btnControls.UseVisualStyleBackColor = false;
             this.btnControls.Click += new System.EventHandler(this.btnClick);
@@ -114,7 +114,7 @@ namespace CAP_MAN
             this.btnOptions.Location = new System.Drawing.Point(0, 456);
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(256, 64);
-            this.btnOptions.TabIndex = 4;
+            this.btnOptions.TabIndex = 5;
             this.btnOptions.Text = "Options";
             this.btnOptions.UseVisualStyleBackColor = false;
             this.btnOptions.Click += new System.EventHandler(this.btnClick);
@@ -174,6 +174,17 @@ namespace CAP_MAN
             this.pDesktop.Size = new System.Drawing.Size(1024, 688);
             this.pDesktop.TabIndex = 2;
             // 
+            // pbBanner
+            // 
+            this.pbBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(63)))), ((int)(((byte)(242)))));
+            this.pbBanner.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbBanner.Location = new System.Drawing.Point(0, 0);
+            this.pbBanner.Margin = new System.Windows.Forms.Padding(0);
+            this.pbBanner.Name = "pbBanner";
+            this.pbBanner.Size = new System.Drawing.Size(1024, 64);
+            this.pbBanner.TabIndex = 1;
+            this.pbBanner.TabStop = false;
+            // 
             // pbLogo
             // 
             this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
@@ -182,17 +193,6 @@ namespace CAP_MAN
             this.pbLogo.Size = new System.Drawing.Size(360, 360);
             this.pbLogo.TabIndex = 0;
             this.pbLogo.TabStop = false;
-            // 
-            // pbBanner
-            // 
-            this.pbBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(193)))), ((int)(((byte)(63)))), ((int)(((byte)(242)))));
-            this.pbBanner.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pbBanner.Location = new System.Drawing.Point(0, 0);
-            this.pbBanner.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-            this.pbBanner.Name = "pbBanner";
-            this.pbBanner.Size = new System.Drawing.Size(1024, 64);
-            this.pbBanner.TabIndex = 1;
-            this.pbBanner.TabStop = false;
             // 
             // formHome
             // 
@@ -207,8 +207,8 @@ namespace CAP_MAN
             this.Text = "Home";
             this.pMenu.ResumeLayout(false);
             this.pDesktop.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
