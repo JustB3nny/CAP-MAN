@@ -21,7 +21,21 @@ namespace CAP_MAN
         public Point p1Position = new Point(1, 28); //Player 1 position.
         public Point p2Position = new Point(26, 28); //Player 2 position.
         public int p1XMove, p1YMove, p2XMove, p2YMove; //Movement/direction.
-        
+
+        public Image p1Up = Image.FromFile(@"..\..\..\Images\BLUE_up.png");
+        public Image p1Down = Image.FromFile(@"..\..\..\Images\BLUE_down.png");
+        public Image p1Left = Image.FromFile(@"..\..\..\Images\BLUE_left.png");
+        public Image p1Right = Image.FromFile(@"..\..\..\Images\BLUE_right.png");
+
+        public Image p1Sprite;
+
+        public Image p2Up = Image.FromFile(@"..\..\..\Images\YELLOW_up.png");
+        public Image p2Down = Image.FromFile(@"..\..\..\Images\YELLOW_down.png");
+        public Image p2Left = Image.FromFile(@"..\..\..\Images\YELLOW_left.png");
+        public Image p2Right = Image.FromFile(@"..\..\..\Images\YELLOW_right.png");
+
+        public Image p2Sprite;
+
         //Global maze variables for grid size, cell size, wall data and coin data.
         //Defines the width and height of the grid.
         public int gridWidth = 28, gridHeight = 30;
@@ -38,8 +52,6 @@ namespace CAP_MAN
 
         //Global rendering variables.
         Graphics g;
-
-        Image Image = Image.FromFile(@"..\..\..\Images\BLUE_right.png");
 
         public formGame()
         {
@@ -81,36 +93,82 @@ namespace CAP_MAN
         //Start game button
         private void btnStart_Click(object sender, EventArgs e)
         {
+            //Checks if the multiplayer bool is true.
             if (multiplayer)
             {
+                //Checks to see if both user inputs are 3 characters long.
                 if (tbPlayer1.TextLength == 3 && tbPlayer2.TextLength == 3)
                 {
-                    p1Name = tbPlayer1.Text.ToUpper();
-                    p2Name = tbPlayer2.Text.ToUpper();
-                    lbPlayer1.Hide(); lbPlayer1.Hide(); tbPlayer1.Hide(); tbPlayer2.Hide(); btnStart.Hide(); //Hides the user interface elements asking for the user's alias etc.
-                    pbGame.Show(); lblP1Score.Show(); lblP2Score.Show(); //Shows the picturebox which the game will be displayed in.
-                    draw(); //Calls the draw proceedure.
-                    timerTick.Start(); //Starts the timer.
+                    //Checks to make sure that the user inputs are not the same.
+                    if (tbPlayer1.Text != tbPlayer2.Text)
+                    {
+                        //Calls the start proceedure.
+                        start();
+                    }
+                    else
+                    {
+                        //Displays a message saying that they can't have the same alias.
+                        MessageBox.Show("Player 1 & player 2 cannot have the same alias.");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("You need to have 3 characters for your alias.");
+                    //Displays a message saying that the users alias must be 3 characters long.
+                    MessageBox.Show("Your alias must be 3 characters long.");
                 }
             }
             else
             {
-                if (tbPlayer1.TextLength == 3)
+                //Checks to see if the user input is 3 characters long.
+                if(tbPlayer1.TextLength == 3)
                 {
-                    p1Name = tbPlayer1.Text.ToUpper();
-                    lbPlayer1.Hide(); lbPlayer1.Hide(); tbPlayer1.Hide(); tbPlayer2.Hide(); btnStart.Hide();
-                    pbGame.Show(); lblP1Score.Show(); //Shows the picturebox which the game will be displayed in.
-                    draw(); //Calls the draw proceedure.
-                    timerTick.Start(); //Starts the timer.
+                    //Calls the start proceedure.
+                    start();
                 }
                 else
                 {
-                    MessageBox.Show("You need to have 3 characters for your alias.");
+                    MessageBox.Show("Your alias must be 3 characters long.");
                 }
+            }
+        }
+        //Start proceedure for when the start button is pressed.
+        private void start()
+        {
+            if (multiplayer)
+            {
+                //Hides UI elements.
+                lbPlayer2.Hide();
+                tbPlayer2.Hide();
+                //Stores player 1 alias.
+                p2Name = tbPlayer2.Text.ToUpper();
+                //Shows player 1 score lable.
+                lblP2Score.Show();
+            }
+            //Hides UI elements.
+            lbPlayer1.Hide();
+            tbPlayer1.Hide();
+            btnStart.Hide();
+            //Stores player 1 alias.
+            p1Name = tbPlayer1.Text.ToUpper();
+            //Shows player 1 score lable.
+            lblP1Score.Show();
+            //Shows picturebox the game is rendered to.
+            pbGame.Show();
+            //Sets the sprites to be an image that isn't looking at a wall.
+            p1Sprite = p1Right;
+            p2Sprite = p2Left;
+            //Calls the draw proceedure.
+            draw();
+            //Starts the game timer.
+            timerTick.Start();
+        }
+
+        //Textbox Key Validation
+        private void textboxKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 22 || e.KeyChar == (char)Keys.Space)
+            {
+                e.Handled = true;
             }
         }
 
@@ -123,24 +181,28 @@ namespace CAP_MAN
             {
                 p1XMove = -1;
                 p1YMove = 0;
+                p1Sprite = p1Left;
             }
             //If key pressed is D move player 1 to the right.
             if (keyData == Keys.D)
             {
                 p1XMove = 1;
                 p1YMove = 0;
+                p1Sprite = p1Right;
             }
             //If key pressed is W move player 1 up.
             if (keyData == Keys.W)
             {
                 p1XMove = 0;
                 p1YMove = -1;
+                p1Sprite = p1Up;
             }
             //If key pressed is W move player 1 down.
             if (keyData == Keys.S)
             {
                 p1XMove = 0;
                 p1YMove = 1;
+                p1Sprite = p1Down;
             }
             //Player 2 movement
             //If key pressed is left arrow move player 2 to the left.
@@ -148,24 +210,28 @@ namespace CAP_MAN
             {
                 p2XMove = -1;
                 p2YMove = 0;
+                p2Sprite = p2Left;
             }
             //If key pressed is right arrow move player 2 to the right.
             if (keyData == Keys.Right)
             {
                 p2XMove = 1;
                 p2YMove = 0;
+                p2Sprite = p2Right;
             }
             //If key pressed is up arrow move player 2 up.
             if (keyData == Keys.Up)
             {
                 p2XMove = 0;
                 p2YMove = -1;
+                p2Sprite = p2Up;
             }
             //If key pressed is down arrow move player 2 down.
             if (keyData == Keys.Down)
             {
                 p2XMove = 0;
                 p2YMove = 1;
+                p2Sprite = p2Down;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -257,16 +323,14 @@ namespace CAP_MAN
                 g.FillEllipse(Brushes.Orange, points[i].X * cellSize.Width + cellSize.Width / 2, points[i].Y * cellSize.Height + cellSize.Height / 2, 5, 5);
             }
 
-            //g.DrawImage(Image, p1.X * cellSize.Width + cellSize.Width / 4, p1.Y * cellSize.Height, 20, 20);
-
             //Player 1 rendering.
-            //Draws a green circle using the player position points multiplied by the width and height of one cell to create a bitmap coordinate. 
-            g.FillEllipse(Brushes.Green, p1Position.X * cellSize.Width + cellSize.Width / 4, p1Position.Y * cellSize.Height, 20, 20);
+            //Draws the player sprite using the player position points multiplied by the width and height of one cell to create a bitmap coordinate. 
+            g.DrawImage(p1Sprite, p1Position.X * cellSize.Width + cellSize.Width / 4, p1Position.Y * cellSize.Height, 20, 20);
             //Player 2 rendering.
-            //Draws a red circle using the player position points multiplied by the width and height of one cell to create a bitmap coordinate. 
+            //Draws the player sprite using the player position points multiplied by the width and height of one cell to create a bitmap coordinate. 
             if (multiplayer)
             {
-               g.FillEllipse(Brushes.Red, p2Position.X * cellSize.Width + cellSize.Width / 4, p2Position.Y * cellSize.Height, 20, 20);
+               g.DrawImage(p2Sprite, p2Position.X * cellSize.Width + cellSize.Width / 4, p2Position.Y * cellSize.Height, 20, 20);
             }
 
             //Refreshing the picturebox background with the updated graphics/info.

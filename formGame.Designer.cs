@@ -140,6 +140,7 @@ namespace CAP_MAN
             this.tbPlayer1.Size = new System.Drawing.Size(144, 64);
             this.tbPlayer1.TabIndex = 0;
             this.tbPlayer1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbPlayer1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textboxKeyPress);
             // 
             // timerTick
             // 
@@ -170,7 +171,7 @@ namespace CAP_MAN
             this.lblP2Score.Text = "Score:";
             this.lblP2Score.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // formStartGame
+            // formGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -181,7 +182,7 @@ namespace CAP_MAN
             this.Controls.Add(this.pMain);
             this.Controls.Add(this.lbBanner);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "formStartGame";
+            this.Name = "formGame";
             this.Text = "formStartGame";
             this.Load += new System.EventHandler(this.formStartGame_Load);
             this.pMain.ResumeLayout(false);
