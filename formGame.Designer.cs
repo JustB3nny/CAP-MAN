@@ -38,9 +38,11 @@ namespace CAP_MAN
             this.lbPlayer1 = new System.Windows.Forms.Label();
             this.tbPlayer2 = new System.Windows.Forms.TextBox();
             this.tbPlayer1 = new System.Windows.Forms.TextBox();
-            this.timerTick = new System.Windows.Forms.Timer(this.components);
+            this.playerTick = new System.Windows.Forms.Timer(this.components);
             this.lblP1Score = new System.Windows.Forms.Label();
             this.lblP2Score = new System.Windows.Forms.Label();
+            this.ghostTick = new System.Windows.Forms.Timer(this.components);
+            this.renderTick = new System.Windows.Forms.Timer(this.components);
             this.pMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbGame)).BeginInit();
             this.SuspendLayout();
@@ -142,10 +144,10 @@ namespace CAP_MAN
             this.tbPlayer1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbPlayer1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textboxKeyPress);
             // 
-            // timerTick
+            // playerTick
             // 
-            this.timerTick.Interval = 150;
-            this.timerTick.Tick += new System.EventHandler(this.timerTick_Tick);
+            this.playerTick.Interval = 150;
+            this.playerTick.Tick += new System.EventHandler(this.playerTick_Tick);
             // 
             // lblP1Score
             // 
@@ -170,6 +172,16 @@ namespace CAP_MAN
             this.lblP2Score.TabIndex = 3;
             this.lblP2Score.Text = "Score:";
             this.lblP2Score.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ghostTick
+            // 
+            this.ghostTick.Interval = 150;
+            this.ghostTick.Tick += new System.EventHandler(this.ghostTick_Tick);
+            // 
+            // renderTick
+            // 
+            this.renderTick.Interval = 1;
+            this.renderTick.Tick += new System.EventHandler(this.renderTick_Tick);
             // 
             // formGame
             // 
@@ -201,9 +213,11 @@ namespace CAP_MAN
         private System.Windows.Forms.TextBox tbPlayer2;
         private System.Windows.Forms.TextBox tbPlayer1;
         private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.Timer timerTick;
+        private System.Windows.Forms.Timer playerTick;
         private System.Windows.Forms.PictureBox pbGame;
         private System.Windows.Forms.Label lblP1Score;
         private System.Windows.Forms.Label lblP2Score;
+        private System.Windows.Forms.Timer ghostTick;
+        private System.Windows.Forms.Timer renderTick;
     }
 }

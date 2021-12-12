@@ -22,19 +22,27 @@ namespace CAP_MAN
         public Point p2Position = new Point(26, 28); //Player 2 position.
         public int p1XMove, p1YMove, p2XMove, p2YMove; //Movement/direction.
 
+        //Player 1 sprites.
         public Image p1Up = Image.FromFile(@"..\..\..\Images\BLUE_up.png");
         public Image p1Down = Image.FromFile(@"..\..\..\Images\BLUE_down.png");
         public Image p1Left = Image.FromFile(@"..\..\..\Images\BLUE_left.png");
         public Image p1Right = Image.FromFile(@"..\..\..\Images\BLUE_right.png");
-
         public Image p1Sprite;
 
+        //Player 2 sprites.
         public Image p2Up = Image.FromFile(@"..\..\..\Images\YELLOW_up.png");
         public Image p2Down = Image.FromFile(@"..\..\..\Images\YELLOW_down.png");
         public Image p2Left = Image.FromFile(@"..\..\..\Images\YELLOW_left.png");
         public Image p2Right = Image.FromFile(@"..\..\..\Images\YELLOW_right.png");
-
         public Image p2Sprite;
+
+        //Global ghost variables.
+        public Point purpleGhost = new Point(1, 1); //Purple Ghost Position.
+        public Point pinkGhost = new Point(26, 1); //Pink Ghost Position.
+        public Point greenGhost = new Point(9, 11); //Green Ghost Position.
+        public Point blueGhost = new Point(6, 19); //Blue Ghost Position.
+
+
 
         //Global maze variables for grid size, cell size, wall data and coin data.
         //Defines the width and height of the grid.
@@ -160,7 +168,10 @@ namespace CAP_MAN
             //Calls the draw proceedure.
             draw();
             //Starts the game timer.
-            timerTick.Start();
+            playerTick.Start();
+            renderTick.Start();
+            ghostTick.Start();
+            ghostTick.Start();
         }
 
         //Textbox Key Validation
@@ -236,8 +247,8 @@ namespace CAP_MAN
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        //Game tick.
-        private void timerTick_Tick(object sender, EventArgs e)
+        //Player timer.
+        private void playerTick_Tick(object sender, EventArgs e)
         {
             //Player movement update.
             //Updates player 1's X & Y position with the direction the user wishes to move in.
@@ -298,10 +309,21 @@ namespace CAP_MAN
             //Player score update
             lblP1Score.Text = p1Name + "'s Score: " + Convert.ToString(p1Score);
             lblP2Score.Text = p2Name + "'s Score: " + Convert.ToString(p2Score);
+        }
+        //Ghost timer.
+        private void ghostTick_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        //Rendering timer.
+        private void renderTick_Tick(object sender, EventArgs e)
+        {
 
             //Draw graphics.
             draw(); //Calls the draw proceedure.
         }
+
 
         //Graphics rendering.
         private void draw()
@@ -310,6 +332,7 @@ namespace CAP_MAN
             g.Clear(Color.Black);
 
             //Maze rendering.
+
             //Draws the maze walls by looping through every index.
             for (int i = 0; i < walls.Count; i++)
             {
@@ -323,6 +346,8 @@ namespace CAP_MAN
                 g.FillEllipse(Brushes.Orange, points[i].X * cellSize.Width + cellSize.Width / 2, points[i].Y * cellSize.Height + cellSize.Height / 2, 5, 5);
             }
 
+            //Player rendering/
+
             //Player 1 rendering.
             //Draws the player sprite using the player position points multiplied by the width and height of one cell to create a bitmap coordinate. 
             g.DrawImage(p1Sprite, p1Position.X * cellSize.Width + cellSize.Width / 4, p1Position.Y * cellSize.Height, 20, 20);
@@ -332,6 +357,13 @@ namespace CAP_MAN
             {
                g.DrawImage(p2Sprite, p2Position.X * cellSize.Width + cellSize.Width / 4, p2Position.Y * cellSize.Height, 20, 20);
             }
+
+            //Ghost rendering.
+            g.FillEllipse(Brushes.Purple, purpleGhost.X * cellSize.Width + cellSize.Width / 4, purpleGhost.Y * cellSize.Height, 20, 20);
+            g.FillEllipse(Brushes.Pink, pinkGhost.X * cellSize.Width + cellSize.Width / 4, pinkGhost.Y * cellSize.Height, 20, 20);
+            g.FillEllipse(Brushes.Green, greenGhost.X * cellSize.Width + cellSize.Width / 4, greenGhost.Y * cellSize.Height, 20, 20);
+            g.FillEllipse(Brushes.Blue, blueGhost.X * cellSize.Width + cellSize.Width / 4, blueGhost.Y * cellSize.Height, 20, 20);
+
 
             //Refreshing the picturebox background with the updated graphics/info.
             Refresh();
