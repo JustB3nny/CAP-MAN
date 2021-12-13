@@ -146,7 +146,7 @@ namespace CAP_MAN
             // 
             // playerTick
             // 
-            this.playerTick.Interval = 150;
+            this.playerTick.Interval = 200;
             this.playerTick.Tick += new System.EventHandler(this.playerTick_Tick);
             // 
             // lblP1Score
@@ -175,7 +175,7 @@ namespace CAP_MAN
             // 
             // ghostTick
             // 
-            this.ghostTick.Interval = 150;
+            this.ghostTick.Interval = 200;
             this.ghostTick.Tick += new System.EventHandler(this.ghostTick_Tick);
             // 
             // renderTick

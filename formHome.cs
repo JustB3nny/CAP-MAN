@@ -12,7 +12,7 @@ namespace CAP_MAN
 {
     public partial class formHome : Form
     {
-        private Form activeForm = null;
+        public Form activeForm = null;
 
         public formHome()
         {

@@ -15,33 +15,153 @@ namespace CAP_MAN
     {
         //Multiplayer flag to determine gamemode.
         public bool multiplayer;
-        //Global player variables for name, score, position and movement.
-        public string p1Name, p2Name; //Name.
-        public int p1Score, p2Score; //Score.
-        public Point p1Position = new Point(1, 28); //Player 1 position.
-        public Point p2Position = new Point(26, 28); //Player 2 position.
-        public int p1XMove, p1YMove, p2XMove, p2YMove; //Movement/direction.
+        class Player
+        {
+            public Point location;
+            public int xDirection;
+            public int yDirection;
+            public string playerName;
+            public int playerScore;
+            public Image playerUp;
+            public Image playerDown;
+            public Image playerLeft;
+            public Image playerRight;
+            public Image playerSprite;
 
-        //Player 1 sprites.
-        public Image p1Up = Image.FromFile(@"..\..\..\Images\BLUE_up.png");
-        public Image p1Down = Image.FromFile(@"..\..\..\Images\BLUE_down.png");
-        public Image p1Left = Image.FromFile(@"..\..\..\Images\BLUE_left.png");
-        public Image p1Right = Image.FromFile(@"..\..\..\Images\BLUE_right.png");
-        public Image p1Sprite;
+            public Player(Point spawnLocation, Image up, Image down, Image left, Image right, Image sprite)
+            {
+                location = spawnLocation;
+                playerUp = up;
+                playerDown = down;
+                playerLeft = left;
+                playerRight = right;
+                playerSprite = sprite;
+                xDirection = 0;
+                yDirection = 0;
+            }
 
-        //Player 2 sprites.
-        public Image p2Up = Image.FromFile(@"..\..\..\Images\YELLOW_up.png");
-        public Image p2Down = Image.FromFile(@"..\..\..\Images\YELLOW_down.png");
-        public Image p2Left = Image.FromFile(@"..\..\..\Images\YELLOW_left.png");
-        public Image p2Right = Image.FromFile(@"..\..\..\Images\YELLOW_right.png");
-        public Image p2Sprite;
+            public void movement(string direction)
+            {
+                switch (direction)
+                {
+                    case "up":
+                        playerSprite = playerUp;
+                        xDirection = 0;
+                        yDirection = -1;
+                        break;
+                    case "down":
+                        playerSprite = playerDown;
+                        xDirection = 0;
+                        yDirection = 1;
+                        break;
+                    case "left":
+                        playerSprite = playerLeft;
+                        xDirection = -1;
+                        yDirection = 0;
+                        break;
+                    case "right":
+                        playerSprite = playerRight;
+                        xDirection = 1;
+                        yDirection = 0;
+                        break;
+                }
+            }
 
-        //Global ghost variables.
-        public Point purpleGhost = new Point(1, 1); //Purple Ghost Position.
-        public Point pinkGhost = new Point(26, 1); //Pink Ghost Position.
-        public Point greenGhost = new Point(9, 11); //Green Ghost Position.
-        public Point blueGhost = new Point(6, 19); //Blue Ghost Position.
+            public void wallCollision(List<Point> data)
+            {
+                //Wall collision.
+                //Loops through every index in the list of points called walls.
+                foreach (Point i in data)
+                {
+                    //Compares the point at each index to the player's position.
+                    if (i == location)
+                    {
+                        //If the player's position is the same as a wall position, it sets the players position back one movement value.
+                        location = new Point(location.X - xDirection, location.Y - yDirection);
+                    }
+                }
+            }
 
+            public void pointCollection(ref List<Point> data)
+            {
+                for (int i = 0; i < data.Count; i++) //Loops through each index in the list of points.
+                {
+                    if (data[i] == location) //If the point and the index == to player 1's point.
+                    {
+                        data.RemoveAt(i); //Removes the point from the list at the index i.
+                        playerScore++; //Increases the player's score by 1.
+                    }
+                }
+            }
+            public void update()
+            {
+                location = new Point(location.X + xDirection, location.Y + yDirection);
+            }
+        }
+
+        Player playerOne = new Player(new Point(1, 28), Image.FromFile(@"..\..\..\Images\BLUE_up.png"), Image.FromFile(@"..\..\..\Images\BLUE_down.png"), Image.FromFile(@"..\..\..\Images\BLUE_left.png"), Image.FromFile(@"..\..\..\Images\BLUE_right.png"), Image.FromFile(@"..\..\..\Images\BLUE_right.png"));
+        Player playerTwo = new Player(new Point(26, 28), Image.FromFile(@"..\..\..\Images\YELLOW_up.png"), Image.FromFile(@"..\..\..\Images\YELLOW_down.png"), Image.FromFile(@"..\..\..\Images\YELLOW_left.png"), Image.FromFile(@"..\..\..\Images\YELLOW_right.png"), Image.FromFile(@"..\..\..\Images\YELLOW_left.png"));
+
+        class Ghost
+        {
+            public Point location;
+            public int xDirection;
+            public int yDirection;
+            public Image ghostUp;
+            public Image ghostDown;
+            public Image ghostLeft;
+            public Image ghostRight;
+            public Image ghostSprite;
+
+            public Ghost(Point spawnLocation, Image up, Image down, Image left, Image right, Image sprite)
+            {
+                location = spawnLocation;
+                ghostUp = up;
+                ghostDown = down;
+                ghostLeft = left;
+                ghostRight = right;
+                ghostSprite = sprite;
+                xDirection = 0;
+                yDirection = 0;
+            }
+
+            public void movement(string direction)
+            {
+                switch (direction)
+                {
+                    case "up":
+                        ghostSprite = ghostUp;
+                        xDirection = 0;
+                        yDirection = -1;
+                        break;
+                    case "down":
+                        ghostSprite = ghostDown;
+                        xDirection = 0;
+                        yDirection = 1;
+                        break;
+                    case "left":
+                        ghostSprite = ghostLeft;
+                        xDirection = -1;
+                        yDirection = 0;
+                        break;
+                    case "right":
+                        ghostSprite = ghostRight;
+                        xDirection = 1;
+                        yDirection = 0;
+                        break;
+                }
+            }
+
+            public void update()
+            {
+                location = new Point(location.X + xDirection, location.Y + yDirection);
+            }
+        }
+
+        Ghost purple = new Ghost(new Point(1, 1), Image.FromFile(@"..\..\..\Images\ghost_porple_up.png"), Image.FromFile(@"..\..\..\Images\ghost_porple_down.png"), Image.FromFile(@"..\..\..\Images\ghost_porple_left.png"), Image.FromFile(@"..\..\..\Images\ghost_porple_right.png"), Image.FromFile(@"..\..\..\Images\ghost_porple_right.png"));
+        Ghost pink = new Ghost(new Point(26, 1), Image.FromFile(@"..\..\..\Images\ghost_pink_up.png"), Image.FromFile(@"..\..\..\Images\ghost_pink_down.png"), Image.FromFile(@"..\..\..\Images\ghost_pink_left.png"), Image.FromFile(@"..\..\..\Images\ghost_pink_right.png"), Image.FromFile(@"..\..\..\Images\ghost_pink_left.png"));
+        Ghost blue = new Ghost(new Point(9, 11), Image.FromFile(@"..\..\..\Images\ghost_blue_up.png"), Image.FromFile(@"..\..\..\Images\ghost_blue_down.png"), Image.FromFile(@"..\..\..\Images\ghost_blue_left.png"), Image.FromFile(@"..\..\..\Images\ghost_blue_right.png"), Image.FromFile(@"..\..\..\Images\ghost_blue_right.png"));
+        Ghost green = new Ghost(new Point(6, 19), Image.FromFile(@"..\..\..\Images\ghost_green_up.png"), Image.FromFile(@"..\..\..\Images\ghost_green_down.png"), Image.FromFile(@"..\..\..\Images\ghost_green_left.png"), Image.FromFile(@"..\..\..\Images\ghost_green_right.png"), Image.FromFile(@"..\..\..\Images\ghost_green_right.png"));
 
 
         //Global maze variables for grid size, cell size, wall data and coin data.
@@ -148,7 +268,7 @@ namespace CAP_MAN
                 lbPlayer2.Hide();
                 tbPlayer2.Hide();
                 //Stores player 1 alias.
-                p2Name = tbPlayer2.Text.ToUpper();
+                playerTwo.playerName = tbPlayer2.Text.ToUpper();
                 //Shows player 1 score lable.
                 lblP2Score.Show();
             }
@@ -157,20 +277,16 @@ namespace CAP_MAN
             tbPlayer1.Hide();
             btnStart.Hide();
             //Stores player 1 alias.
-            p1Name = tbPlayer1.Text.ToUpper();
+            playerOne.playerName = tbPlayer1.Text.ToUpper();
             //Shows player 1 score lable.
             lblP1Score.Show();
             //Shows picturebox the game is rendered to.
             pbGame.Show();
-            //Sets the sprites to be an image that isn't looking at a wall.
-            p1Sprite = p1Right;
-            p2Sprite = p2Left;
             //Calls the draw proceedure.
             draw();
             //Starts the game timer.
             playerTick.Start();
             renderTick.Start();
-            ghostTick.Start();
             ghostTick.Start();
         }
 
@@ -186,142 +302,238 @@ namespace CAP_MAN
         //Key press movement.
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            //Player 1 movement.
-            //If key pressed is A move player 1 to the left.
-            if (keyData == Keys.A)
+            if (playerTick.Enabled)
             {
-                p1XMove = -1;
-                p1YMove = 0;
-                p1Sprite = p1Left;
+                //Player 1 movement.
+                //If key pressed is A move player 1 to the left.
+                if (keyData == Keys.A)
+                {
+                    playerOne.movement("left");
+                }
+                //If key pressed is D move player 1 to the right.
+                if (keyData == Keys.D)
+                {
+                    playerOne.movement("right");
+                }
+                //If key pressed is W move player 1 up.
+                if (keyData == Keys.W)
+                {
+                    playerOne.movement("up");
+                }
+                //If key pressed is W move player 1 down.
+                if (keyData == Keys.S)
+                {
+                    playerOne.movement("down");
+                }
+                //Player 2 movement
+                if (multiplayer)
+                {
+                    //If key pressed is left arrow move player 2 to the left.
+                    if (keyData == Keys.Left)
+                    {
+                        playerTwo.movement("left");
+                    }
+                    //If key pressed is right arrow move player 2 to the right.
+                    if (keyData == Keys.Right)
+                    {
+                        playerTwo.movement("right");
+                    }
+                    //If key pressed is up arrow move player 2 up.
+                    if (keyData == Keys.Up)
+                    {
+                        playerTwo.movement("up");
+                    }
+                    //If key pressed is down arrow move player 2 down.
+                    if (keyData == Keys.Down)
+                    {
+                        playerTwo.movement("down");
+                    }
+                }
             }
-            //If key pressed is D move player 1 to the right.
-            if (keyData == Keys.D)
-            {
-                p1XMove = 1;
-                p1YMove = 0;
-                p1Sprite = p1Right;
-            }
-            //If key pressed is W move player 1 up.
-            if (keyData == Keys.W)
-            {
-                p1XMove = 0;
-                p1YMove = -1;
-                p1Sprite = p1Up;
-            }
-            //If key pressed is W move player 1 down.
-            if (keyData == Keys.S)
-            {
-                p1XMove = 0;
-                p1YMove = 1;
-                p1Sprite = p1Down;
-            }
-            //Player 2 movement
-            //If key pressed is left arrow move player 2 to the left.
-            if (keyData == Keys.Left)
-            {
-                p2XMove = -1;
-                p2YMove = 0;
-                p2Sprite = p2Left;
-            }
-            //If key pressed is right arrow move player 2 to the right.
-            if (keyData == Keys.Right)
-            {
-                p2XMove = 1;
-                p2YMove = 0;
-                p2Sprite = p2Right;
-            }
-            //If key pressed is up arrow move player 2 up.
-            if (keyData == Keys.Up)
-            {
-                p2XMove = 0;
-                p2YMove = -1;
-                p2Sprite = p2Up;
-            }
-            //If key pressed is down arrow move player 2 down.
-            if (keyData == Keys.Down)
-            {
-                p2XMove = 0;
-                p2YMove = 1;
-                p2Sprite = p2Down;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
+                return base.ProcessCmdKey(ref msg, keyData);
         }
 
         //Player timer.
         private void playerTick_Tick(object sender, EventArgs e)
         {
-            //Player movement update.
-            //Updates player 1's X & Y position with the direction the user wishes to move in.
-            p1Position = new Point(p1Position.X + p1XMove, p1Position.Y + p1YMove);
-            //Only if the multiplayer flag is true.
+            playerOne.update();
+            playerOne.wallCollision(walls);
+            playerOne.pointCollection(ref points);
+            lblP1Score.Text = playerOne.playerName + "'s Score: " + Convert.ToString(playerOne.playerScore);
+
             if (multiplayer)
             {
-                //Updates player 2's X & Y position with the direction the user wishes to move in.
-                p2Position = new Point(p2Position.X + p2XMove, p2Position.Y + p2YMove);
-            }
-            //Wall collision.
-            //Loops through every index in the list of points called walls.
-            foreach (Point i in walls)
-            {
-                //Compares the point at each index to the player's position.
-                if (i == p1Position)
-                {
-                    //If the player's position is the same as a wall position, it sets the players position back one movement value.
-                    p1Position = new Point(p1Position.X - p1XMove, p1Position.Y - p1YMove);
-                }
-                //Only if the multiplayer flag is true.
-                if (multiplayer)
-                {
-                    //Compares the point at each index to the player's position.
-                    if (i == p2Position)
-                    {
-                        //If the player's position is the same as a wall position, it sets the players position back one movement value.
-                        p2Position = new Point(p2Position.X - p2XMove, p2Position.Y - p2YMove);
-                    }
-                }
-            }
-
-            //Point collision.
-            for (int i = 0; i < points.Count; i++) //Loops through each index in the list of points.
-            {
-                if (points[i] == p1Position) //If the point and the index == to player 1's point.
-                {
-                    points.Remove(points[i]); //Removes the point from the list at the index i.
-                    p1Score++; //Increases the player's score by 1.
-                }
-            }
-            if (multiplayer) //Only if multiplayer.
-            {
-                for (int i = 0; i < points.Count; i++) //Loops through each index in the list of points.
-                {
-                    if (points[i] == p2Position) //If the point and the index == to player 2's point.
-                    {
-                        points.RemoveAt(i); //Removes the point from the list at the index i.
-                        p2Score++; //Increases the player's score by 1.
-                    }
-                }
+                playerTwo.update();
+                playerTwo.wallCollision(walls);
+                playerTwo.pointCollection(ref points);
+                lblP2Score.Text = playerTwo.playerName + "'s Score: " + Convert.ToString(playerTwo.playerScore);
             }
             //Point respawn.
             if (points.Count == 0) //If the list of points is empty.
             {
                 loadMaze(point, ref points); //Refil the list with the points read from the file.
+                if (ghostTick.Interval > 150)
+                {
+                    ghostTick.Interval = ghostTick.Interval - 5;
+                }
             }
-            //Player score update
-            lblP1Score.Text = p1Name + "'s Score: " + Convert.ToString(p1Score);
-            lblP2Score.Text = p2Name + "'s Score: " + Convert.ToString(p2Score);
         }
         //Ghost timer.
         private void ghostTick_Tick(object sender, EventArgs e)
         {
+            if (purple.location == playerOne.location || pink.location == playerOne.location || blue.location == playerOne.location || green.location == playerOne.location || purple.location == playerTwo.location || pink.location == playerTwo.location || blue.location == playerTwo.location || green.location == playerTwo.location)
+            {
+                stop();
+                string[]scoreboard = File.ReadAllText(@"..\..\..\Files\scoreboard.capman").Split(Environment.NewLine).OrderByDescending(x => x).ToArray(); //Kinda works
+                File.WriteAllLines(@"..\..\..\Files\scoreboard.capman", scoreboard);
+                MessageBox.Show("Game Over!");
 
+         }
+            //Movement logic.
+            //Purple ghost
+            if (purple.location == new Point(1,1))
+            {
+                purple.movement("right");
+            }
+            else if (purple.location == new Point(12, 1))
+            {
+                purple.movement("down");
+            }
+            else if (purple.location == new Point(12, 5))
+            {
+                purple.movement("left");
+            }
+            else if (purple.location == new Point(6, 5))
+            {
+                purple.movement("down");
+            }
+            else if (purple.location == new Point(6, 8))
+            {
+                purple.movement("left");
+            }
+            else if (purple.location == new Point(1, 8))
+            {
+                purple.movement("up");
+            }
+            //Pink ghost
+            if (pink.location == new Point(26, 1))
+            {
+                pink.movement("left");
+            }
+            else if (pink.location == new Point(15, 1))
+            {
+                pink.movement("down");
+            }
+            else if (pink.location == new Point(15, 5))
+            {
+                pink.movement("right");
+            }
+            else if (pink.location == new Point(21, 5))
+            {
+                pink.movement("down");
+            }
+            else if (pink.location == new Point(21, 8))
+            {
+                pink.movement("right");
+            }
+            else if (pink.location == new Point(26, 8))
+            {
+                pink.movement("up");
+            }
+            //Blue ghost
+            if (blue.location == new Point(9, 11))
+            {
+                blue.movement("right");
+            }
+            else if (blue.location == new Point(18, 11))
+            {
+                blue.movement("down");
+            }
+            else if (blue.location == new Point(18, 17))
+            {
+                blue.movement("left");
+            }
+            else if (blue.location == new Point(9, 17))
+            {
+                blue.movement("up");
+            }
+            //Green ghost
+            if (green.location == new Point(6, 19))
+            {
+                green.movement("right");
+            }
+            else if (green.location == new Point(12, 19))
+            {
+                green.movement("down");
+            }
+            else if (green.location == new Point(12, 22))
+            {
+                green.movement("right");
+            }
+            else if (green.location == new Point(15, 22))
+            {
+                green.movement("up");
+            }
+            else if (green.location == new Point(15, 19))
+            {
+                green.movement("right");
+            }
+            else if (green.location == new Point(21, 19))
+            {
+                green.movement("down");
+            }
+            else if (green.location == new Point(21, 22))
+            {
+                green.movement("left");
+            }
+            else if (green.location == new Point(18, 22))
+            {
+                green.movement("down");
+            }
+            else if (green.location == new Point(18, 25))
+            {
+                green.movement("left");
+            }
+            else if (green.location == new Point(15, 25))
+            {
+                green.movement("down");
+            }
+            else if (green.location == new Point(15, 28))
+            {
+                green.movement("left");
+            }
+            else if (green.location == new Point(12, 28))
+            {
+                green.movement("up");
+            }
+            else if (green.location == new Point(12, 25))
+            {
+                green.movement("left");
+            }
+            else if (green.location == new Point(9, 25))
+            {
+                green.movement("up");
+            }
+            else if (green.location == new Point(9, 22))
+            {
+                green.movement("left");
+            }
+            else if (green.location == new Point(6, 22))
+            {
+                green.movement("up");
+            }
+            purple.update();
+            pink.update();
+            blue.update();
+            green.update();
         }
 
         //Rendering timer.
         private void renderTick_Tick(object sender, EventArgs e)
         {
-
             //Draw graphics.
-            draw(); //Calls the draw proceedure.
+            //Calls the draw proceedure.
+            draw();
         }
 
 
@@ -332,7 +544,6 @@ namespace CAP_MAN
             g.Clear(Color.Black);
 
             //Maze rendering.
-
             //Draws the maze walls by looping through every index.
             for (int i = 0; i < walls.Count; i++)
             {
@@ -346,23 +557,23 @@ namespace CAP_MAN
                 g.FillEllipse(Brushes.Orange, points[i].X * cellSize.Width + cellSize.Width / 2, points[i].Y * cellSize.Height + cellSize.Height / 2, 5, 5);
             }
 
-            //Player rendering/
+            //Player rendering
 
             //Player 1 rendering.
             //Draws the player sprite using the player position points multiplied by the width and height of one cell to create a bitmap coordinate. 
-            g.DrawImage(p1Sprite, p1Position.X * cellSize.Width + cellSize.Width / 4, p1Position.Y * cellSize.Height, 20, 20);
+            g.DrawImage(playerOne.playerSprite, playerOne.location.X * cellSize.Width + cellSize.Width / 4, playerOne.location.Y * cellSize.Height, 20, 20);
             //Player 2 rendering.
             //Draws the player sprite using the player position points multiplied by the width and height of one cell to create a bitmap coordinate. 
             if (multiplayer)
             {
-               g.DrawImage(p2Sprite, p2Position.X * cellSize.Width + cellSize.Width / 4, p2Position.Y * cellSize.Height, 20, 20);
+               g.DrawImage(playerTwo.playerSprite, playerTwo.location.X * cellSize.Width + cellSize.Width / 4, playerTwo.location.Y * cellSize.Height, 20, 20);
             }
 
             //Ghost rendering.
-            g.FillEllipse(Brushes.Purple, purpleGhost.X * cellSize.Width + cellSize.Width / 4, purpleGhost.Y * cellSize.Height, 20, 20);
-            g.FillEllipse(Brushes.Pink, pinkGhost.X * cellSize.Width + cellSize.Width / 4, pinkGhost.Y * cellSize.Height, 20, 20);
-            g.FillEllipse(Brushes.Green, greenGhost.X * cellSize.Width + cellSize.Width / 4, greenGhost.Y * cellSize.Height, 20, 20);
-            g.FillEllipse(Brushes.Blue, blueGhost.X * cellSize.Width + cellSize.Width / 4, blueGhost.Y * cellSize.Height, 20, 20);
+            g.DrawImage(purple.ghostSprite, purple.location.X * cellSize.Width + cellSize.Width / 4, purple.location.Y * cellSize.Height, 20, 20);
+            g.DrawImage(pink.ghostSprite, pink.location.X * cellSize.Width + cellSize.Width / 4, pink.location.Y * cellSize.Height, 20, 20);
+            g.DrawImage(blue.ghostSprite, blue.location.X * cellSize.Width + cellSize.Width / 4, blue.location.Y * cellSize.Height, 20, 20);
+            g.DrawImage(green.ghostSprite, green.location.X * cellSize.Width + cellSize.Width / 4, green.location.Y * cellSize.Height, 20, 20);
 
 
             //Refreshing the picturebox background with the updated graphics/info.
@@ -384,5 +595,11 @@ namespace CAP_MAN
             }
         }
 
+        public void stop()
+        {
+            playerTick.Stop();
+            ghostTick.Stop();
+            renderTick.Stop();
+        }
     }
 }

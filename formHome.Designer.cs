@@ -223,8 +223,8 @@ namespace CAP_MAN
         private System.Windows.Forms.Button btnLeaderboard;
         private System.Windows.Forms.Button btnLocalMultiplayer;
         private System.Windows.Forms.Button btnSingleplayer;
-        private System.Windows.Forms.Panel pDesktop;
         private System.Windows.Forms.PictureBox pbLogo;
         private System.Windows.Forms.PictureBox pbBanner;
+        public System.Windows.Forms.Panel pDesktop;
     }
 }
