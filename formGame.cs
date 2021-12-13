@@ -201,9 +201,9 @@ namespace CAP_MAN
             }
             //Hides certain elements from showing till the game has started.
             //Hides the picturebox which the game is rendered to.
-            pbGame.Hide(); 
+            pbGame.Hide();
             //Hides the lable that displays player 1's score.
-            lblP1Score.Hide(); 
+            lblP1Score.Hide();
             //Hides the lable that displays player 2's score.
             lblP2Score.Hide();
             //Calculates the size of one grid cell by dividing the width and height of the picturebox by the gridWidth and gridHeight variables.
@@ -248,7 +248,7 @@ namespace CAP_MAN
             else
             {
                 //Checks to see if the user input is 3 characters long.
-                if(tbPlayer1.TextLength == 3)
+                if (tbPlayer1.TextLength == 3)
                 {
                     //Calls the start proceedure.
                     start();
@@ -293,7 +293,11 @@ namespace CAP_MAN
         //Textbox Key Validation
         private void textboxKeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == 22 || e.KeyChar == (char)Keys.Space)
+            if(char.IsLetter(e.KeyChar) || e.KeyChar == (char)Keys.Back)
+            {
+                e.Handled = false;
+            }
+            else
             {
                 e.Handled = true;
             }
@@ -350,12 +354,16 @@ namespace CAP_MAN
                     }
                 }
             }
-                return base.ProcessCmdKey(ref msg, keyData);
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         //Player timer.
         private void playerTick_Tick(object sender, EventArgs e)
         {
+            if (purple.location == playerOne.location || pink.location == playerOne.location || blue.location == playerOne.location || green.location == playerOne.location || purple.location == playerTwo.location || pink.location == playerTwo.location || blue.location == playerTwo.location || green.location == playerTwo.location)
+            {
+                gameOver();
+            }
             playerOne.update();
             playerOne.wallCollision(walls);
             playerOne.pointCollection(ref points);
@@ -381,17 +389,9 @@ namespace CAP_MAN
         //Ghost timer.
         private void ghostTick_Tick(object sender, EventArgs e)
         {
-            if (purple.location == playerOne.location || pink.location == playerOne.location || blue.location == playerOne.location || green.location == playerOne.location || purple.location == playerTwo.location || pink.location == playerTwo.location || blue.location == playerTwo.location || green.location == playerTwo.location)
-            {
-                stop();
-                string[]scoreboard = File.ReadAllText(@"..\..\..\Files\scoreboard.capman").Split(Environment.NewLine).OrderByDescending(x => x).ToArray(); //Kinda works
-                File.WriteAllLines(@"..\..\..\Files\scoreboard.capman", scoreboard);
-                MessageBox.Show("Game Over!");
-
-         }
             //Movement logic.
             //Purple ghost
-            if (purple.location == new Point(1,1))
+            if (purple.location == new Point(1, 1))
             {
                 purple.movement("right");
             }
@@ -522,6 +522,10 @@ namespace CAP_MAN
             {
                 green.movement("up");
             }
+            if (purple.location == playerOne.location || pink.location == playerOne.location || blue.location == playerOne.location || green.location == playerOne.location || purple.location == playerTwo.location || pink.location == playerTwo.location || blue.location == playerTwo.location || green.location == playerTwo.location)
+            {
+                gameOver();
+            }
             purple.update();
             pink.update();
             blue.update();
@@ -566,7 +570,7 @@ namespace CAP_MAN
             //Draws the player sprite using the player position points multiplied by the width and height of one cell to create a bitmap coordinate. 
             if (multiplayer)
             {
-               g.DrawImage(playerTwo.playerSprite, playerTwo.location.X * cellSize.Width + cellSize.Width / 4, playerTwo.location.Y * cellSize.Height, 20, 20);
+                g.DrawImage(playerTwo.playerSprite, playerTwo.location.X * cellSize.Width + cellSize.Width / 4, playerTwo.location.Y * cellSize.Height, 20, 20);
             }
 
             //Ghost rendering.
@@ -595,11 +599,58 @@ namespace CAP_MAN
             }
         }
 
-        public void stop()
+        public void gameOver()
         {
             playerTick.Stop();
             ghostTick.Stop();
             renderTick.Stop();
+            List<string> scoreboard = new List<string>();
+            bool playerOneFound = false;
+            bool playerTwoFound = false;
+            var scores = File.ReadAllLines(@"..\..\..\Files\scoreboard.capman").Select(x => x.Split(":")).Select(x => new { Name = x[0], Score = int.Parse(x[1]) }).OrderByDescending(x => x.Score);
+            foreach (var score in scores)
+            {
+                if (playerOne.playerName == score.Name)
+                {
+                    playerOneFound = true;
+                    if (playerOne.playerScore > score.Score)
+                    {
+                        MessageBox.Show("Congratulations " + playerOne.playerName + " you have reached a new high score");
+                        scoreboard.Add(score.Name + ":" + playerOne.playerScore);
+                    }
+                    else
+                    {
+                        scoreboard.Add(score.Name + ":" + score.Score);
+                    }
+                }
+                else if (playerTwo.playerName == score.Name && multiplayer)
+                {
+                    playerOneFound = true;
+                    if (playerTwo.playerScore > score.Score)
+                    {
+                        MessageBox.Show("Congratulations " + playerTwo.playerName + " you have reached a new high score");
+                        scoreboard.Add(score.Name + ":" + playerTwo.playerScore);
+                    }
+                    else
+                    {
+                        scoreboard.Add(score.Name + ":" + score.Score);
+                    }
+                }
+                else
+                {
+                    scoreboard.Add(score.Name + ":" + score.Score);
+                }
+            }
+            if (!playerOneFound)
+            {
+                scoreboard.Add(playerOne.playerName + ":" + playerOne.playerScore);
+            }
+            if (!playerTwoFound && multiplayer)
+            {
+                scoreboard.Add(playerTwo.playerName + ":" + playerTwo.playerScore);
+            }
+            File.WriteAllLines(@"..\..\..\Files\scoreboard.capman", scoreboard);
+            MessageBox.Show("Game Over!");
         }
     }
 }
