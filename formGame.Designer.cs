@@ -128,6 +128,7 @@ namespace CAP_MAN
             this.tbPlayer2.Location = new System.Drawing.Point(510, 232);
             this.tbPlayer2.MaxLength = 3;
             this.tbPlayer2.Name = "tbPlayer2";
+            this.tbPlayer2.ShortcutsEnabled = false;
             this.tbPlayer2.Size = new System.Drawing.Size(144, 64);
             this.tbPlayer2.TabIndex = 1;
             this.tbPlayer2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -139,6 +140,7 @@ namespace CAP_MAN
             this.tbPlayer1.Location = new System.Drawing.Point(510, 162);
             this.tbPlayer1.MaxLength = 3;
             this.tbPlayer1.Name = "tbPlayer1";
+            this.tbPlayer1.ShortcutsEnabled = false;
             this.tbPlayer1.Size = new System.Drawing.Size(144, 64);
             this.tbPlayer1.TabIndex = 0;
             this.tbPlayer1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
