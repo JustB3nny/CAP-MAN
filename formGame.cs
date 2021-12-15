@@ -15,149 +15,192 @@ namespace CAP_MAN
     {
         //Multiplayer flag to determine gamemode.
         public bool multiplayer;
+        //Player class.
         class Player
         {
+            //Declares all the variables that will be used for each player.
+            //Stores the grid location of the player.
             public Point location;
+            //Stores the direction which the player is traveling.
             public int xDirection;
             public int yDirection;
+            //Stores the players alias that was entered into the textbox.
             public string playerName;
+            //Holds the player score that is updated every player tick.
             public int playerScore;
+            //Stores the sprite images for the player and their directions.
             public Image playerUp;
             public Image playerDown;
             public Image playerLeft;
             public Image playerRight;
             public Image playerSprite;
-
+            //Player constructor.
             public Player(Point spawnLocation, Image up, Image down, Image left, Image right, Image sprite)
             {
+                //Player location is set.
                 location = spawnLocation;
+                //Sprites are loaded and set.
                 playerUp = up;
                 playerDown = down;
                 playerLeft = left;
                 playerRight = right;
                 playerSprite = sprite;
+                //Direction is set to 0.
                 xDirection = 0;
                 yDirection = 0;
             }
-
+            //Movement method.
             public void movement(string direction)
             {
+                //Checks the direction that is sent to the method.
                 switch (direction)
                 {
+                    //If the string is "up".
                     case "up":
+                        //Sets the current sprite to player up image.
                         playerSprite = playerUp;
+                        //Sets X value to 0 and Y value to -1 (up).
                         xDirection = 0;
                         yDirection = -1;
                         break;
+                    //If the string is "down".
                     case "down":
+                        //Sets the current sprite to player down image.
                         playerSprite = playerDown;
+                        //Sets X value to 0 and Y value to 1 (down).
                         xDirection = 0;
                         yDirection = 1;
                         break;
+                    //If the string is "left".
                     case "left":
+                        //Sets the current sprite to player left image.
                         playerSprite = playerLeft;
+                        //Sets Y value to 0 and X value to -1 (left).
                         xDirection = -1;
                         yDirection = 0;
                         break;
+                    //If the string is "right".
                     case "right":
+                        //Sets the current sprite to player right image.
                         playerSprite = playerRight;
+                        //Sets Y value to 0 and X value to 1 (right).
                         xDirection = 1;
                         yDirection = 0;
                         break;
                 }
             }
-
+            //Collision method.
             public void wallCollision(List<Point> data)
             {
-                //Wall collision.
-                //Loops through every index in the list of points called walls.
+                //Loops through all the indexes in the data list.
                 foreach (Point i in data)
                 {
-                    //Compares the point at each index to the player's position.
+                    //Checks to see if the player's location is the same as the point at the index.
                     if (i == location)
                     {
-                        //If the player's position is the same as a wall position, it sets the players position back one movement value.
+                        //Moves the player back 1 grid position in the direction they're traveling.
                         location = new Point(location.X - xDirection, location.Y - yDirection);
                     }
                 }
             }
-
+            //Point collection method.
             public void pointCollection(ref List<Point> data)
             {
-                for (int i = 0; i < data.Count; i++) //Loops through each index in the list of points.
+                //Loops through all the indexes in the data list.
+                for (int i = 0; i < data.Count; i++)
                 {
-                    if (data[i] == location) //If the point and the index == to player 1's point.
+                    //Checks to see if the player's location is the same as the point at the index.
+                    if (data[i] == location)
                     {
-                        data.RemoveAt(i); //Removes the point from the list at the index i.
-                        playerScore++; //Increases the player's score by 1.
+                        //Removes the point from the list at the index.
+                        data.RemoveAt(i);
+                        //Increases the player's score.
+                        playerScore++;
                     }
                 }
             }
+            //Update method.
             public void update()
             {
+                //Updates the player's location with the next place the player will move to.
                 location = new Point(location.X + xDirection, location.Y + yDirection);
             }
         }
-
+        //Create's the player's using the constructor.
         Player playerOne = new Player(new Point(1, 28), Image.FromFile(@"..\..\..\Images\BLUE_up.png"), Image.FromFile(@"..\..\..\Images\BLUE_down.png"), Image.FromFile(@"..\..\..\Images\BLUE_left.png"), Image.FromFile(@"..\..\..\Images\BLUE_right.png"), Image.FromFile(@"..\..\..\Images\BLUE_right.png"));
         Player playerTwo = new Player(new Point(26, 28), Image.FromFile(@"..\..\..\Images\YELLOW_up.png"), Image.FromFile(@"..\..\..\Images\YELLOW_down.png"), Image.FromFile(@"..\..\..\Images\YELLOW_left.png"), Image.FromFile(@"..\..\..\Images\YELLOW_right.png"), Image.FromFile(@"..\..\..\Images\YELLOW_left.png"));
-
+        //Ghost class
         class Ghost
         {
+            //Stores the location of the ghost's.
             public Point location;
+            //Stores the direction the ghost is moving.
             public int xDirection;
             public int yDirection;
+            //Stores the sprite images for the ghosts and their directions.
             public Image ghostUp;
             public Image ghostDown;
             public Image ghostLeft;
             public Image ghostRight;
             public Image ghostSprite;
-
+            //Ghost constructor.
             public Ghost(Point spawnLocation, Image up, Image down, Image left, Image right, Image sprite)
             {
+                //Ghost location is set.
                 location = spawnLocation;
+                //Sprites are loaded and set.
                 ghostUp = up;
                 ghostDown = down;
                 ghostLeft = left;
                 ghostRight = right;
                 ghostSprite = sprite;
+                //Direction is set to 0.
                 xDirection = 0;
                 yDirection = 0;
             }
-
+            //Movement method.
             public void movement(string direction)
             {
                 switch (direction)
                 {
                     case "up":
+                        //Sets the current sprite to ghost up image.
                         ghostSprite = ghostUp;
+                        //Sets X value to 0 and Y value to -1 (up).
                         xDirection = 0;
                         yDirection = -1;
                         break;
                     case "down":
+                        //Sets the current sprite to ghost down image.
                         ghostSprite = ghostDown;
+                        //Sets X value to 0 and Y value to 1 (down).
                         xDirection = 0;
                         yDirection = 1;
                         break;
                     case "left":
+                        //Sets the current sprite to ghost left image.
                         ghostSprite = ghostLeft;
+                        //Sets Y value to 0 and X value to -1 (left).
                         xDirection = -1;
                         yDirection = 0;
                         break;
                     case "right":
+                        //Sets the current sprite to ghost right image.
                         ghostSprite = ghostRight;
+                        //Sets Y value to 0 and X value to 1 (right).
                         xDirection = 1;
                         yDirection = 0;
                         break;
                 }
             }
-
+            //Update method.
             public void update()
             {
+                //Updates the ghost's location with the next place the ghost will move to.
                 location = new Point(location.X + xDirection, location.Y + yDirection);
             }
         }
-
+        //Creates the ghost's using the contructor.
         Ghost purple = new Ghost(new Point(1, 1), Image.FromFile(@"..\..\..\Images\ghost_porple_up.png"), Image.FromFile(@"..\..\..\Images\ghost_porple_down.png"), Image.FromFile(@"..\..\..\Images\ghost_porple_left.png"), Image.FromFile(@"..\..\..\Images\ghost_porple_right.png"), Image.FromFile(@"..\..\..\Images\ghost_porple_right.png"));
         Ghost pink = new Ghost(new Point(26, 1), Image.FromFile(@"..\..\..\Images\ghost_pink_up.png"), Image.FromFile(@"..\..\..\Images\ghost_pink_down.png"), Image.FromFile(@"..\..\..\Images\ghost_pink_left.png"), Image.FromFile(@"..\..\..\Images\ghost_pink_right.png"), Image.FromFile(@"..\..\..\Images\ghost_pink_left.png"));
         Ghost blue = new Ghost(new Point(9, 11), Image.FromFile(@"..\..\..\Images\ghost_blue_up.png"), Image.FromFile(@"..\..\..\Images\ghost_blue_down.png"), Image.FromFile(@"..\..\..\Images\ghost_blue_left.png"), Image.FromFile(@"..\..\..\Images\ghost_blue_right.png"), Image.FromFile(@"..\..\..\Images\ghost_blue_right.png"));
@@ -293,12 +336,15 @@ namespace CAP_MAN
         //Textbox Key Validation
         private void textboxKeyPress(object sender, KeyPressEventArgs e)
         {
+            //Checks to see if the key pressed is a letter or backspace.
             if(char.IsLetter(e.KeyChar) || e.KeyChar == (char)Keys.Back)
             {
+                //Allows the character to be entered into the textbox.
                 e.Handled = false;
             }
             else
             {
+                //Ignores the key.
                 e.Handled = true;
             }
         }
